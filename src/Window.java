@@ -10,7 +10,7 @@ public class Window extends JFrame implements ActionListener
 
         setSize(400,500);
         setTitle("Asteroids");
-        setLayout(new GridLayout(4,1));
+        setLayout(new GridLayout(4,1,0,20));
 
         bNewGame = new JButton("Nowa gra");
         bNewGame.addActionListener(this);

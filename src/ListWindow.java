@@ -8,7 +8,7 @@ public class ListWindow extends JFrame
     JTextArea ltext;
     public ListWindow() {
 
-        setSize(500,500);
+        setSize(300,500);
         setTitle("Lista wyników");
         setLayout(new GridLayout(1,1));
         ltext=new JTextArea("1.Zasasy gry:");
