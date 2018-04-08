@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 public class GameWindow extends JFrame implements KeyListener
 {
     public GameWindow() {
-
         setSize(600,600);
         setTitle("Nowa gra");
         setLayout(new FlowLayout(FlowLayout.RIGHT));
