@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Window extends JFrame implements ActionListener
-{   String name;
-    JButton bNewGame,bListOfResults,bHelp,bExit;
+{   private String name;
+    private JButton bNewGame,bListOfResults,bHelp,bExit;
     public Window() {
 
         setSize(400,500);
@@ -35,14 +35,12 @@ public class Window extends JFrame implements ActionListener
     {
         Object source = e.getSource();
         if (source==bNewGame) {
-            GameWindow gameWindow = new GameWindow();
             name=JOptionPane.showInputDialog("Podaj imie:");
-            if(name.isEmpty()){
-                gameWindow.setVisible(false);
-            }else{
+            if(!name.isEmpty()) {
+                GameWindow gameWindow = new GameWindow();
                 gameWindow.setVisible(true);
+                gameWindow.setLocationRelativeTo(null);
             }
-            gameWindow.setLocationRelativeTo(null);
         }else if (source==bListOfResults) {
             ListWindow listWindow = new ListWindow();
             listWindow.setVisible(true);
