@@ -1,4 +1,16 @@
-﻿1.Jakub
-2.Kamil
-3.Andrzej
-4...
+﻿<?xml version = "1.0"?>
+<class title="Lista wyników">
+   <level number="1">
+
+   </level>
+   
+   <level number="2">
+      <name>Stefan</name>
+      <score>95</score>
+   </level>
+   
+   <level number="3">
+      <name>Andrzej</name>
+      <score>90</score>
+   </level>
+</class>

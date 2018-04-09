@@ -1,0 +1,23 @@
+<?xml version = "1.0"?>
+<init>
+    <level>
+      <lives>3</lives>
+      <asteroids>5</asteroids>
+      <hitscore>10</hitscore>
+      <asteroidsspeed>5</asteroidsspeed>
+    </level>
+
+    <level>
+        <lives>2</lives>
+        <asteroids>10</asteroids>
+        <hitscore>25</hitscore>
+        <asteroidsspeed>6</asteroidsspeed>
+    </level>
+
+    <level>
+        <lives>1</lives>
+        <asteroids>15</asteroids>
+        <hitscore>50</hitscore>
+        <asteroidsspeed>7</asteroidsspeed>
+    </level>
+</init>
