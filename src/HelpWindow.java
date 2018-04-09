@@ -8,8 +8,7 @@ public class HelpWindow extends JFrame
     JTextArea ltext;
     public HelpWindow() {
         setSize(800, 500);
-        setTitle("Pomoc");
-        setLayout(new GridLayout(1,1));
+        setLayout(new GridLayout(2,1));
         ltext=new JTextArea("1.Zasasy gry:");
         ltext.setEditable(false);
         String filename = "zasady.txt";
