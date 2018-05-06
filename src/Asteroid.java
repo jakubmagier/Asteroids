@@ -1,8 +1,8 @@
 import java.awt.*;
 
 public class Asteroid extends Actor {
-    int astx[] = {6, 7, 7, 7, 6, -7};
-    int asty[] = {-6, -3, 0, 3, 6, 0};
+    private int astx[] = {-18, -11, -2, 18, 20, 18, 10, 0, -8};
+    private int asty[] = {18, 21, 15, 18, 14, -18, -20, -12, -15};
 
     protected double rotVel;
 
@@ -15,15 +15,13 @@ public class Asteroid extends Actor {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle((int)getX() - 6, (int)getY() - 6, 12, 12);
-    }
-
-    public Asteroid(double x, double y) {
-        super(x, y);
-        this.setShape(new Rectangle((int)getX() - 6, (int)getY() - 6, 12, 12));
+        Rectangle r = new Rectangle((int)getX() - 24, (int)getY() - 24, 50, 50);
+        return r;
     }
 
     public Asteroid() {
-
+        setShape(new Polygon(astx, asty, astx.length));
+        setRotVel(0.0);
+        setAlive(true);
     }
 }

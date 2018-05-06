@@ -30,6 +30,7 @@ public class Window extends JFrame implements ActionListener
         container.add(bHelp);
         container.add(bExit);
     }
+
     @Override
     public void actionPerformed(ActionEvent e)
     {

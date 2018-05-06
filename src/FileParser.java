@@ -11,7 +11,7 @@ public class FileParser {
     public static String parseList() {
         String out = "";
         try {
-            File inputFile = new File("lista.txt");
+            File inputFile = new File("../lista.txt");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
@@ -37,11 +37,10 @@ public class FileParser {
         return out;
     }
 
-
     static InitData parseInit(int level) {
         InitData initData = new InitData();
         try {
-            File inputFile = new File("init.txt");
+            File inputFile = new File("../init.txt");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
@@ -57,7 +56,8 @@ public class FileParser {
                 int asteroids = Integer.parseInt(eElement.getElementsByTagName("asteroids").item(0).getTextContent());
                 int hitScore = Integer.parseInt(eElement.getElementsByTagName("hitscore").item(0).getTextContent());
                 int asteroidsSpeed = Integer.parseInt(eElement.getElementsByTagName("asteroidsspeed").item(0).getTextContent());
-                initData = new InitData(lives, asteroids, hitScore, asteroidsSpeed);
+                int bullets = Integer.parseInt(eElement.getElementsByTagName("bullets").item(0).getTextContent());
+                initData = new InitData(lives, asteroids, hitScore, asteroidsSpeed, bullets);
 
             }
 

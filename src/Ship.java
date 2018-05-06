@@ -1,17 +1,15 @@
 import java.awt.*;
 
 public class Ship extends Actor {
-
-    private int[] shipx = {-6, -3, 0, 3, 6, 0};
-    private int[] shipy = {6, 7, 7, 7, 6, -7};
+    private int[] shipx = {-7,-4,1,4,7,1};
+    private int[] shipy = {7,8,8,8,7,-8};
 
     public Rectangle getBounds() {
-        return new Rectangle((int)getX() - 6, (int)getY() - 6, 12, 12);
+        Rectangle r = new Rectangle((int)getX() - 5, (int)getY() - 5, 14, 14);
+        return r;
     }
-
     public Ship() {
         setShape(new Polygon(shipx, shipy, shipx.length));
-
+        setAlive(true);
     }
-
 }

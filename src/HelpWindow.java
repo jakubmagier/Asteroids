@@ -5,7 +5,7 @@ import java.io.FileReader;
 
 public class HelpWindow extends JFrame
 {
-    JTextArea ltext;
+    private JTextArea ltext;
     public HelpWindow() {
         setSize(800, 500);
         setLayout(new GridLayout(2,1));
