@@ -3,6 +3,10 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+/**
+ * Okno pomocy, wczytuje dane z pliku lista
+ * @see JFrame
+ */
 public class HelpWindow extends JFrame
 {
     private JTextArea ltext;

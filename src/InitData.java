@@ -1,3 +1,7 @@
+/**
+ * struktura do przechowywania danych inicjalizacji gry
+ * @see GameApp
+ */
 public class InitData {
     int lives;
     int asteroids;

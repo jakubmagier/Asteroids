@@ -1,5 +1,10 @@
 import java.awt.*;
 
+/**
+ * klasa asteroidy, ustala jej kształt
+ * @see Actor
+ */
+
 public class Asteroid extends Actor {
     private int astx[] = {-18, -11, -2, 18, 20, 18, 10, 0, -8};
     private int asty[] = {18, 21, 15, 18, 14, -18, -20, -12, -15};

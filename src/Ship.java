@@ -1,5 +1,9 @@
 import java.awt.*;
 
+/**
+ * klasa statku, ustala jego kształt
+ * @see Actor
+ */
 public class Ship extends Actor {
     private int[] shipx = {-7,-4,1,4,7,1};
     private int[] shipy = {7,8,8,8,7,-8};

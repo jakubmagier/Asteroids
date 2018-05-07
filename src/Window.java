@@ -3,6 +3,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Okno menu głównego
+ * @see JFrame
+ * @see ActionListener
+ */
 public class Window extends JFrame implements ActionListener
 {   private String name;
     private JButton bNewGame,bListOfResults,bHelp,bExit;
@@ -31,6 +36,10 @@ public class Window extends JFrame implements ActionListener
         container.add(bExit);
     }
 
+    /**
+     * obsługa przyciskow menu
+     * @see ActionListener
+     */
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -39,6 +48,7 @@ public class Window extends JFrame implements ActionListener
             name=JOptionPane.showInputDialog("Podaj imie:");
             if(!name.isEmpty()) {
                 GameWindow gameWindow = new GameWindow();
+                gameWindow.setDefaultCloseOperation(0);
                 gameWindow.setVisible(true);
                 gameWindow.setLocationRelativeTo(null);
             }

@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Okno z listą wyników, wczytuje dane z pliku lista
+ */
 public class ListWindow extends JFrame
 {
     JTextArea ltext;

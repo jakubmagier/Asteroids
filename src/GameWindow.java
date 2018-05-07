@@ -3,16 +3,20 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * Okno gry, obsługuje jej uruchamianie, wczytywanie danych z pliku init oraz pauzę
+ */
 public class GameWindow extends JFrame implements KeyListener {
     private GridBagConstraints gc = new GridBagConstraints();
     private GameApp game;
+
     public GameWindow() {
-        setSize(1024,800);
+        setSize(1024, 800);
         setLayout(new GridBagLayout());
         addKeyListener(this);
         InitData init = FileParser.parseInit(1);
 
-        game=new GameApp(init);
+        game = new GameApp(init);
         game.setPreferredSize(new Dimension(900, 700));
         gc.gridx = 0;
         gc.gridy = 0;
@@ -21,44 +25,46 @@ public class GameWindow extends JFrame implements KeyListener {
         gc.fill = GridBagConstraints.BOTH;
         gc.anchor = GridBagConstraints.WEST;
         add(game, gc);
-        JLabel score = new JLabel("Wynik: 0");
-        JLabel time = new JLabel("Czas: 0:50");
-        JLabel lives = new JLabel("Zycia: 2");
-
-        gc.gridheight = 1;
-        gc.gridx = 1;
-        gc.gridy = 0;
-        gc.fill = GridBagConstraints.HORIZONTAL;
-        add(score, gc);
-        gc.gridx = 1;
-        gc.gridy = 1;
-        gc.fill = GridBagConstraints.HORIZONTAL;
-        add(time, gc);
-        gc.gridx = 1;
-        gc.gridy = 2;
-        gc.fill = GridBagConstraints.HORIZONTAL;
-        add(lives, gc);
     }
 
+    /**
+     * @see KeyListener
+     */
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
+    /**
+     * obsługa pauzy
+     *
+     * @see KeyListener
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
-        if(key == KeyEvent.VK_P){
+        if (key == KeyEvent.VK_P) {
             game.stop();
-            int option=JOptionPane.showConfirmDialog(null, "Czy chcesz opuścić grę?", "Pauza", JOptionPane.YES_NO_OPTION);
-            if(option==JOptionPane.YES_OPTION)
+            int option = JOptionPane.showConfirmDialog(null, "Czy chcesz opuścić grę?", "Pauza", JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION) {
+                StopWindow stopWindow = new StopWindow();
+                stopWindow.setLocationRelativeTo(null);
+                stopWindow.setUndecorated(true);
+                stopWindow.setResizable(false);
+                stopWindow.setVisible(true);
                 dispose();
+            }
             else
                 game.start();
         }
         game.keyPressed(e);
-    }
+        if (key == KeyEvent.VK_E)
+            dispose();
+     }
 
+    /**
+     * @see KeyListener
+     */
     @Override
     public void keyReleased(KeyEvent e) {
     }

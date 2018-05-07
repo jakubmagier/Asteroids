@@ -1,5 +1,9 @@
 import java.awt.*;
 
+/**
+ * Klasa obsługująca obiekty poruszające się po ekranie gry, przechowuje ich pozycję, prędkość i kąt ruchu
+ */
+
 public class Actor {
     private Shape shape;
     private double x, y;

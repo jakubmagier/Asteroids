@@ -1,3 +1,5 @@
+import javafx.scene.paint.Stop;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -5,6 +7,10 @@ import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+
+/**
+ * klasa główna gry, zawiera pętlę gry, kontroluje odświeżanie i inicjalizację aktorów
+ */
 
 public class GameApp extends JPanel implements Runnable, KeyListener{
 
@@ -17,13 +23,21 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
     private Bullet[] b;
     private int currentBullet = 0;
     private Ship s = new Ship();
+    private Player p = new Player();
     private AffineTransform identity = new AffineTransform();
+
+    /**
+     * inicjalizacja danych gry na podstawie struktury ini
+     * @param ini dane wczytane z pliku init.txt
+     * @see InitData
+     * @see FileParser
+     */
 
     public GameApp(InitData ini){
         BufferedImage backImage = new BufferedImage(640, 480, BufferedImage.TYPE_INT_RGB);
         g2d = backImage.createGraphics();
-        s.setX(320);
-        s.setY(240);
+        s.setX(450);
+        s.setY(350);
         initData = ini;
         asteroids = initData.asteroids;
         bullets = initData.bullets;
@@ -47,6 +61,10 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
         start();
     }
 
+    /**
+     * Nadpisanie metody paintComponent, służy do przerysowywania obiektów na planszy
+     */
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -55,7 +73,8 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
         g2d.setPaint(Color.BLACK);
         g2d.fillRect(0,0,getSize().width,getSize().height);
         g2d.setColor(Color.WHITE);
-
+        g2d.drawString("Wynik: "+ Math.round(p.getPoints()),50,50);
+        g2d.drawString("Życia: "+ Math.round(p.getLives()),50,70);
         g2d.setTransform(identity);
         g2d.translate(s.getX(),s.getY());
         g2d.rotate(Math.toRadians(s.getFaceAngle()));
@@ -84,20 +103,36 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
         }
     }
 
+    /**
+     * obliczanie kąta poruszania się, zamiana stopni na radiany
+     * @see Math
+     */
     private double calcAngleMoveX(double angle) {
         return (Math.cos(angle * Math.PI / 180));
     }
 
+    /**
+     * obliczanie kąta poruszania się, zamiana stopni na radiany
+     * @see Math
+     */
     private double calcAngleMoveY(double angle) {
         return (Math.sin(angle * Math.PI / 180));
     }
 
+    /**
+     * uruchamianie pętli głównej gry
+     * @see Thread
+     */
     public void start(){
         gameLoop = new Thread(this);
         gameLoop.start();
         run();
     }
 
+    /**
+     * pętla główna gry, implementacja Runnable
+     * @see Runnable
+     */
     public void run(){
         Thread thread = Thread.currentThread();
         while (thread == gameLoop){
@@ -112,10 +147,16 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
         }
     }
 
+    /**
+     * przerywanie pętli głównej gry
+     */
     public void stop(){
         gameLoop = null;
     }
 
+    /**
+     * aktualizacja danych gry
+     */
     private void gameUpdate(){
         updateShip();
         updateBullets();
@@ -123,6 +164,9 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
         checkCollisions();
     }
 
+    /**
+     * aktualizacja danych statku
+     */
     private void updateShip(){
         s.incX(s.getVx());
         if(s.getX()<-10){
@@ -138,6 +182,9 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
         }
     }
 
+    /**
+     * aktualizacja danych pocisków
+     */
     private void updateBullets() {
         for (int i = 0; i < bullets; i++) {
             if (b[i].isAlive()) {
@@ -157,6 +204,9 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
         }
     }
 
+    /**
+     * aktualizacja danych asteroid
+     */
     private void updateAsteroids() {
         for (int i = 0; i < asteroids; i++) {
             if (a[i].isAlive()) {
@@ -181,6 +231,9 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
         }
     }
 
+    /**
+     * sprawdzanie czy nie wystąpiły kolizje między asteroidami a pociskami lub asteroidami a statkiem
+     */
     private void checkCollisions() {
         for (int i = 0; i<asteroids; i++) {
             if (a[i].isAlive()) {
@@ -191,6 +244,7 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
                         {
                             b[j].setAlive(false);
                             a[i].setAlive(false);
+                            p.setPoints(p.getPoints()+10);
                             continue;
                         }
                     }
@@ -198,21 +252,38 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
 
                 if (a[i].getBounds().intersects(s.getBounds())) {
                     a[i].setAlive(false);
-                    s.setX(320);
-                    s.setY(240);
+                    s.setX(450);
+                    s.setY(350);
                     s.setFaceAngle(0);
                     s.setVx(0);
                     s.setVy(0);
+                    p.setLives(p.getLives()-1);
+                    if(p.getLives()==0){
+                        stop();
+                        StopWindow stopWindow = new StopWindow();
+                        stopWindow.setLocationRelativeTo(null);
+                        stopWindow.setUndecorated (true);
+                        stopWindow.setResizable(false);
+                        stopWindow.setVisible(true);
+                    }
                     continue;
                 }
             }
         }
     }
 
+    /**
+     * implementacja KeyListener
+     * @see KeyListener
+     */
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
+    /**
+     * obsluga przyciskow sterujacych gra
+     * @see KeyListener
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -229,11 +300,6 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
                 s.setMoveAngle(s.getFaceAngle() - 90);
                 s.incVx(calcAngleMoveX(s.getMoveAngle()) * 0.1);
                 s.incVy(calcAngleMoveY(s.getMoveAngle()) * 0.1);
-                break;
-            case KeyEvent.VK_DOWN:
-                s.setMoveAngle(s.getFaceAngle() - 90);
-                s.decVx(calcAngleMoveX(s.getMoveAngle()) * 0.1);
-                s.decVy(calcAngleMoveY(s.getMoveAngle()) * 0.1);
                 break;
             case KeyEvent.VK_SPACE:
                 currentBullet++;
@@ -252,8 +318,11 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
         }
     }
 
+    /**
+     * @see KeyListener
+     */
     @Override
-    public void keyReleased(KeyEvent keyEvent) {
+    public void keyReleased(KeyEvent e) {
     }
 
 }
