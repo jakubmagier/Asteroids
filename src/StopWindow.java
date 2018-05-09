@@ -13,10 +13,10 @@ public class StopWindow extends JFrame implements KeyListener {
         setSize(350, 200);
         setLayout(new GridBagLayout());
         int live = Player.getLives();
-        int point = Player.getLives();
+        int point = Player.getPoints();
 
         JLabel score = new JLabel("Wynik: " + point);
-        JLabel time = new JLabel("Czas: 0:50");
+        JLabel time = new JLabel("Czas: 0:00");
         JLabel lives = new JLabel("Zycia: " + live);
         JLabel info = new JLabel("Wciśnij 'enter' aby zamknąć okno");
 
