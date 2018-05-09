@@ -58,8 +58,6 @@ public class GameWindow extends JFrame implements KeyListener {
                 game.start();
         }
         game.keyPressed(e);
-        if (key == KeyEvent.VK_E)
-            dispose();
      }
 
     /**

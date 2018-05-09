@@ -18,7 +18,7 @@ public class StopWindow extends JFrame implements KeyListener {
         JLabel score = new JLabel("Wynik: " + point);
         JLabel time = new JLabel("Czas: 0:50");
         JLabel lives = new JLabel("Zycia: " + live);
-        JLabel info = new JLabel("Wciśnij dwukrotnie 'e' aby wyjść do menu głównego");
+        JLabel info = new JLabel("Wciśnij 'enter' aby zamknąć okno");
 
         gc.gridheight = 1;
         gc.gridx = 1;
@@ -49,7 +49,7 @@ public class StopWindow extends JFrame implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_E) {
+        if (key == KeyEvent.VK_ENTER) {
                 dispose();
         }
     }
