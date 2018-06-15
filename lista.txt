@@ -1,16 +1,59 @@
 ﻿<?xml version = "1.0"?>
 <class title="Lista wyników">
-   <level number="1">
+   
+<player>	<name>Jakub</name>
+      <score>200</score>
+ 
 
-   </level>
+   </player>
    
-   <level number="2">
+   
+<player>
       <name>Stefan</name>
-      <score>95</score>
-   </level>
+      <score>190</score>
+   </player>
    
-   <level number="3">
+   
+<player>
       <name>Andrzej</name>
+      <score>180</score>
+   </player>  
+   
+<player>
+      <name>Maciej</name>
+      <score>170</score>
+   </player>
+<player>	<name>Jurek</name>
+      <score>160</score>
+ 
+
+   </player>
+   
+   
+<player>
+      <name>Irek</name>
+      <score>150</score>
+   </player>
+   
+   
+<player>
+      <name>Łukasz</name>
+      <score>140</score>
+   </player>
+<player>	<name>Mateusz</name>
+      <score>130</score>
+ 
+
+   </player>
+   
+   
+<player>
+      <name>Bartek</name>
+      <score>100</score>
+   </player>
+   
+   
+<player>
+      <name>Krzysiek</name>
       <score>90</score>
-   </level>
-</class>
+   </player></class>

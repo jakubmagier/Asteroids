@@ -12,6 +12,10 @@ public class Ship extends Actor {
         Rectangle r = new Rectangle((int)getX() - 5, (int)getY() - 5, 14, 14);
         return r;
     }
+    public Rectangle getBounds(int rrheight, int rrwidth, int rh, int rw) {
+        Rectangle r = new Rectangle(((int)getX() - rrwidth), (int)getY() - rrheight, rw, rh);
+        return r;
+    }
     public Ship() {
         setShape(new Polygon(shipx, shipy, shipx.length));
         setAlive(true);

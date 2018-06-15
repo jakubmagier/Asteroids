@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
  * @see ActionListener
  */
 public class Window extends JFrame implements ActionListener
-{   private String name;
+{   private static String name;
     private JButton bNewGame,bListOfResults,bHelp,bExit;
     public Window() {
 
@@ -36,6 +36,9 @@ public class Window extends JFrame implements ActionListener
         container.add(bExit);
     }
 
+    public static String getNameOfPlayer() {
+        return name;
+    }
     /**
      * obsługa przyciskow menu
      * @see ActionListener
@@ -64,4 +67,6 @@ public class Window extends JFrame implements ActionListener
             dispose();
         }
     }
+
+
 }

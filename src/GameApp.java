@@ -1,22 +1,21 @@
-import javafx.scene.paint.Stop;
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Random;
-
 /**
  * klasa główna gry, zawiera pętlę gry, kontroluje odświeżanie i inicjalizację aktorów
  */
 
-public class GameApp extends JPanel implements Runnable, KeyListener{
+public class GameApp extends JPanel implements Runnable, KeyListener, ComponentListener{
 
-    private Thread gameLoop;
+    private static Thread gameLoop;
     private Graphics2D g2d;
-    private InitData initData = new InitData();
+    private InitData initData;
     private int asteroids;
     Asteroid[] a;
     private int bullets;
@@ -25,23 +24,26 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
     private Ship s = new Ship();
     private Player p = new Player();
     private AffineTransform identity = new AffineTransform();
-
+    private int height=800,width=1024,rrheight,rrwidth,rh,rw,rrheight1,rrwidth1,rh1,rw1;
+    private double rheight=1,rwidth=1,asteroidsspeed;
+    private static int level=0, lives=3, points=0;
     /**
      * inicjalizacja danych gry na podstawie struktury ini
-     * @param ini dane wczytane z pliku init.txt
+     * @param init dane wczytane z pliku init.txt
      * @see InitData
      * @see FileParser
      */
-
-    public GameApp(InitData ini){
-        BufferedImage backImage = new BufferedImage(640, 480, BufferedImage.TYPE_INT_RGB);
-        g2d = backImage.createGraphics();
-        s.setX(450);
-        s.setY(350);
-        initData = ini;
+    InitData init;
+    public void startGame(){
+        init = FileParser.parseInit(level);
+        initData = init;
         asteroids = initData.asteroids;
         bullets = initData.bullets;
-        b = b = new Bullet[bullets];
+        asteroidsspeed = initData.asteroidsSpeed;
+        s = new Ship();
+        s.setX(width/2);
+        s.setY(height/2);
+        b = new Bullet[bullets];
         a = new Asteroid[asteroids];
         for(int i=0; i<bullets;i++){
             b[i] = new Bullet();
@@ -56,8 +58,17 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
             double ang = a[j].getMoveAngle()-90;
             a[j].setVx(calcAngleMoveX(ang));
             a[j].setVy(calcAngleMoveY(ang));
+            a[j].incVx(calcAngleMoveX(a[j].getMoveAngle()) * asteroidsspeed);
+            a[j].incVy(calcAngleMoveY(a[j].getMoveAngle()) * asteroidsspeed);
         }
+
+    }
+    public GameApp(){
+        BufferedImage backImage = new BufferedImage(640, 480, BufferedImage.TYPE_INT_RGB);
+        g2d = backImage.createGraphics();
+        startGame();
         addKeyListener(this);
+        addComponentListener(this);
         start();
     }
 
@@ -71,12 +82,13 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
         Graphics2D g2d = (Graphics2D) g;
         g2d.setTransform(identity);
         g2d.setPaint(Color.BLACK);
-        g2d.fillRect(0,0,getSize().width,getSize().height);
+        g2d.fillRect(0,0,width, height);
         g2d.setColor(Color.WHITE);
-        g2d.drawString("Wynik: "+ Math.round(p.getPoints()),50,50);
-        g2d.drawString("Życia: "+ Math.round(p.getLives()),50,70);
-        g2d.setTransform(identity);
+        g2d.drawString("POZIOM: "+ Math.round(level+1),50,50);
+        g2d.drawString("PUNKTY: "+ Math.round(points),50,70);
+        g2d.drawString("ŻYCIA: "+ Math.round(lives),50,90);
         g2d.translate(s.getX(),s.getY());
+        g2d.scale(rwidth,rheight);
         g2d.rotate(Math.toRadians(s.getFaceAngle()));
         g2d.setColor(Color.BLUE);
         g2d.draw(s.getShape());
@@ -87,6 +99,7 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
 
                 g2d.setTransform(identity);
                 g2d.translate(b[i].getX(),b[i].getY());
+                g2d.scale(rwidth,rheight);
                 g2d.setColor(Color.GREEN);
                 g2d.draw(b[i].getShape());
             }
@@ -96,6 +109,7 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
             if (a[j].isAlive()) {
                 g2d.setTransform(identity);
                 g2d.translate(a[j].getX(), a[j].getY());
+                g2d.scale(rwidth, rheight);
                 g2d.rotate(Math.toRadians(a[j].getMoveAngle()));
                 g2d.setColor(Color.pink);
                 g2d.fill(a[j].getShape());
@@ -129,6 +143,9 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
         run();
     }
 
+    public static void interrupt(){
+        gameLoop.interrupt();
+    }
     /**
      * pętla główna gry, implementacja Runnable
      * @see Runnable
@@ -150,7 +167,7 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
     /**
      * przerywanie pętli głównej gry
      */
-    public void stop(){
+    public static void stop(){
         gameLoop = null;
     }
 
@@ -170,14 +187,14 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
     private void updateShip(){
         s.incX(s.getVx());
         if(s.getX()<-10){
-            s.setX(getSize().width +10);
-        }else if(s.getX()>getSize().width+10){
+            s.setX(width +10);
+        }else if(s.getX()>width+10){
             s.setX(-10);
         }
         s.incY(s.getVy());
         if(s.getY()<-10){
-            s.setY(getSize().height +10);
-        }else if(s.getY()>getSize().height+10){
+            s.setY(height +10);
+        }else if(s.getY()>height+10){
             s.setY(-10);
         }
     }
@@ -190,13 +207,13 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
             if (b[i].isAlive()) {
                 b[i].incX(b[i].getVx());
                 if (b[i].getX() < 0 ||
-                        b[i].getX() > getSize().width)
+                        b[i].getX() > width)
                 {
                     b[i].setAlive(false);
                 }
                 b[i].incY(b[i].getVy());
                 if (b[i].getY() < 0 ||
-                        b[i].getY() > getSize().height)
+                        b[i].getY() > height)
                 {
                     b[i].setAlive(false);
                 }
@@ -212,14 +229,14 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
             if (a[i].isAlive()) {
                 a[i].incX(a[i].getVx());
                 if (a[i].getX() < -20)
-                    a[i].setX(getSize().width + 20);
-                else if (a[i].getX() > getSize().width + 20)
+                    a[i].setX(width + 20);
+                else if (a[i].getX() > width + 20)
                     a[i].setX(-20);
                 a[i].incY(a[i].getVy());
 
                 if (a[i].getY() < -20)
-                    a[i].setY(getSize().height + 20);
-                else if (a[i].getY() > getSize().height + 20)
+                    a[i].setY(height + 20);
+                else if (a[i].getY() > height + 20)
                     a[i].setY(-20);
                 a[i].incMoveAngle(a[i].getRotVel());
 
@@ -239,32 +256,50 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
             if (a[i].isAlive()) {
                 for (int j = 0; j < bullets; j++) {
                     if (b[j].isAlive()) {
-                        if (a[i].getBounds().contains(
+                        if (a[i].getBounds(rrheight,rrwidth,rh,rw).contains(
                                 b[j].getX(), b[j].getY()))
                         {
                             b[j].setAlive(false);
                             a[i].setAlive(false);
-                            p.setPoints(p.getPoints()+10);
+                            points=points+10;
+                            if(points==50){
+                                level = 1;
+                                inform();
+                                startGame();
+                            }else if(points==100){
+                                level=2;
+                                inform();
+                                startGame();
+                            }else if(points==150){
+                                level=3;
+                                inform();
+                                startGame();
+                            }
                             continue;
                         }
                     }
                 }
 
-                if (a[i].getBounds().intersects(s.getBounds())) {
+                if (a[i].getBounds(rrheight,rrwidth,rh,rw).intersects(s.getBounds(rrheight1,rrwidth1,rh1,rw1))) {
                     a[i].setAlive(false);
-                    s.setX(450);
-                    s.setY(350);
+                    s.setX(width/2);
+                    s.setY(height/2);
                     s.setFaceAngle(0);
                     s.setVx(0);
                     s.setVy(0);
-                    p.setLives(p.getLives()-1);
-                    if(p.getLives()==0){
+                    lives--;
+                    if(lives==0){
                         stop();
+                        p.setName(Window.getNameOfPlayer());
+                        p.setPoints(points);
                         StopWindow stopWindow = new StopWindow();
                         stopWindow.setLocationRelativeTo(null);
                         stopWindow.setUndecorated (true);
                         stopWindow.setResizable(false);
                         stopWindow.setVisible(true);
+                        level=0;
+                        points=0;
+                        lives=3;
                     }
                     continue;
                 }
@@ -272,6 +307,11 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
         }
     }
 
+    public void inform (){
+        stop();
+        JOptionPane.showMessageDialog(null, "Przechodzisz na kolejny poziom!");
+            start();
+    }
     /**
      * implementacja KeyListener
      * @see KeyListener
@@ -298,8 +338,8 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
                 break;
             case KeyEvent.VK_UP:
                 s.setMoveAngle(s.getFaceAngle() - 90);
-                s.incVx(calcAngleMoveX(s.getMoveAngle()) * 0.1);
-                s.incVy(calcAngleMoveY(s.getMoveAngle()) * 0.1);
+                s.incVx(calcAngleMoveX(s.getMoveAngle()) * 0.2);
+                s.incVy(calcAngleMoveY(s.getMoveAngle()) * 0.2);
                 break;
             case KeyEvent.VK_SPACE:
                 currentBullet++;
@@ -323,6 +363,33 @@ public class GameApp extends JPanel implements Runnable, KeyListener{
      */
     @Override
     public void keyReleased(KeyEvent e) {
+    }
+    public void componentHidden(ComponentEvent ce) {}
+    public void componentShown(ComponentEvent ce) {}
+    public void componentMoved(ComponentEvent ce) { }
+    public void componentResized(ComponentEvent ce) {
+        height = this.getHeight();
+        width = this.getWidth();
+        rheight=((double)height/750);
+        rwidth=((double)width/974);
+        rrheight = (int)(rheight*24);
+        rrwidth= (int)(rwidth*24);
+        rh=(int)(rheight*50);
+        rw=(int)(rwidth*50);
+        rrheight1 = (int)(rheight*5);
+        rrwidth1= (int)(rwidth*5);
+        rh1=(int)(rheight*14);
+        rw1=(int)(rwidth*14);
+        s.setX(width/2);
+        s.setY(height/2);
+    }
+
+    public static int getLives() {
+        return lives;
+    }
+
+    public static int getPoints() {
+        return points;
     }
 
 }

@@ -3,21 +3,24 @@
  * @see GameApp
  */
 public class InitData {
-    int lives;
     int asteroids;
-    int hitScore;
     int asteroidsSpeed;
     int bullets;
+    String name;
+    int score;
 
-    public InitData(int lives, int asteroids, int hitScore, int asteroidsSpeed, int bullets) {
-        this.lives = lives;
+    public InitData(int asteroids, int asteroidsSpeed, int bullets) {
         this.asteroids = asteroids;
-        this.hitScore = hitScore;
         this.asteroidsSpeed = asteroidsSpeed;
         this.bullets = bullets;
     }
 
     public InitData() {
 
+    }
+
+    public InitData(String name, int score){
+        this.name=name;
+        this.score=score;
     }
 }

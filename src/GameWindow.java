@@ -1,30 +1,44 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
  * Okno gry, obsługuje jej uruchamianie, wczytywanie danych z pliku init oraz pauzę
  */
-public class GameWindow extends JFrame implements KeyListener {
+public class GameWindow extends JFrame implements KeyListener, ComponentListener {
     private GridBagConstraints gc = new GridBagConstraints();
     private GameApp game;
+    private int height=800,width=1024;
 
     public GameWindow() {
-        setSize(1024, 800);
+        setSize(width, height);
         setLayout(new GridBagLayout());
         addKeyListener(this);
-        InitData init = FileParser.parseInit(1);
+        addComponentListener(this);
 
-        game = new GameApp(init);
-        game.setPreferredSize(new Dimension(900, 700));
+        game = new GameApp();
+        game.setPreferredSize(new Dimension (width-50, height-50));
         gc.gridx = 0;
         gc.gridy = 0;
-        gc.gridheight = 4;
+        gc.gridheight = 1;
+        gc.gridwidth = 1;
 
         gc.fill = GridBagConstraints.BOTH;
-        gc.anchor = GridBagConstraints.WEST;
+        gc.anchor = GridBagConstraints.CENTER;
         add(game, gc);
+    }
+
+    public void componentHidden(ComponentEvent ce) {};
+    public void componentShown(ComponentEvent ce) {};
+    public void componentMoved(ComponentEvent ce) { };
+    public void componentResized(ComponentEvent ce) {
+        height = this.getHeight();
+        width = this.getWidth();
+        setSize(width,height);
+        game.setPreferredSize(new Dimension (width-50, height-50));
     }
 
     /**
@@ -58,6 +72,10 @@ public class GameWindow extends JFrame implements KeyListener {
                 game.start();
         }
         game.keyPressed(e);
+        if (key == KeyEvent.VK_Q){
+                dispose();
+                game.stop();
+        }
      }
 
     /**

@@ -12,23 +12,24 @@ public class StopWindow extends JFrame implements KeyListener {
     public StopWindow() {
         setSize(350, 200);
         setLayout(new GridBagLayout());
-        int live = Player.getLives();
-        int point = Player.getPoints();
+        int live = GameApp.getLives();
+        int point = GameApp.getPoints();
+        String name = Player.getName();
 
+        JLabel nam = new JLabel("Gracz: "+name);
         JLabel score = new JLabel("Wynik: " + point);
-        JLabel time = new JLabel("Czas: 0:00");
         JLabel lives = new JLabel("Zycia: " + live);
-        JLabel info = new JLabel("Wciśnij 'enter' aby zamknąć okno");
+        JLabel info = new JLabel("Wciśnij dwukrotnie 'q' aby zamknąć okno");
 
         gc.gridheight = 1;
         gc.gridx = 1;
         gc.gridy = 0;
         gc.fill = GridBagConstraints.HORIZONTAL;
-        add(score, gc);
+        add(nam, gc);
         gc.gridx = 1;
         gc.gridy = 1;
         gc.fill = GridBagConstraints.HORIZONTAL;
-        add(time, gc);
+        add(score, gc);
         gc.gridx = 1;
         gc.gridy = 2;
         gc.fill = GridBagConstraints.HORIZONTAL;
@@ -49,7 +50,7 @@ public class StopWindow extends JFrame implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_ENTER) {
+        if (key == KeyEvent.VK_Q) {
                 dispose();
         }
     }

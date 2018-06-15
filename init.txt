@@ -2,25 +2,32 @@
 <init>
     <level>
       <lives>3</lives>
-      <asteroids>5</asteroids>
-      <hitscore>10</hitscore>
-      <asteroidsspeed>5</asteroidsspeed>
+      <asteroids>10</asteroids>
+      <asteroidsspeed>1</asteroidsspeed>
       <bullets>20</bullets>
     </level>
 
-    <level>
-        <lives>2</lives>
-        <asteroids>10</asteroids>
-        <hitscore>25</hitscore>
-        <asteroidsspeed>6</asteroidsspeed>
+    
+<level>
+        <lives>3</lives>
+        <asteroids>15</asteroids>
+       <asteroidsspeed>2</asteroidsspeed>
         <bullets>20</bullets>
     </level>
 
-    <level>
-        <lives>1</lives>
+    
+<level>
+        <lives>2</lives>
         <asteroids>15</asteroids>
-        <hitscore>50</hitscore>
-        <asteroidsspeed>7</asteroidsspeed>
+       <asteroidsspeed>3</asteroidsspeed>
         <bullets>20</bullets>
     </level>
-</init>
+
+<level>
+        <lives>2</lives>
+        <asteroids>15</asteroids>
+       <asteroidsspeed>4</asteroidsspeed>
+        <bullets>20</bullets>
+    </level>
+
+   </init>
