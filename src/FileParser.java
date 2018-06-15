@@ -16,6 +16,8 @@ public class FileParser {
 
     public static String parseList() {
         String out = "";
+
+
         try {
             File inputFile = new File("../lista.txt");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -72,7 +74,14 @@ public class FileParser {
     }
 
     static InitData parseInit(int level) {
-        InitData initData = new InitData();
+
+        try{
+            ClientHandler clientHandler = new ClientHandler();
+            return clientHandler.getInit();
+        }
+        catch (Exception e) {
+            System.out.println("blad hadlera w funkcji ParseInt");
+        }
         try {
             File inputFile = new File("../init.txt");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -89,7 +98,7 @@ public class FileParser {
                 int asteroids = Integer.parseInt(eElement.getElementsByTagName("asteroids").item(0).getTextContent());
                 int asteroidsSpeed = Integer.parseInt(eElement.getElementsByTagName("asteroidsspeed").item(0).getTextContent());
                 int bullets = Integer.parseInt(eElement.getElementsByTagName("bullets").item(0).getTextContent());
-                initData = new InitData( asteroids, asteroidsSpeed, bullets);
+                return new InitData( asteroids, asteroidsSpeed, bullets);
 
             }
 
@@ -97,6 +106,6 @@ public class FileParser {
             e.printStackTrace();
 
         }
-        return initData;
+        return new InitData();
     }
 }
